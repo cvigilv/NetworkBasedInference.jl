@@ -39,7 +39,7 @@ module NetworkBasedInference
 	"""
 
 	"""
-	function SDTNBI(F₀::Symmetric)::Matrix
+	function SDTNBI(F₀::AbstractMatrix)::Matrix
 		k(A, x) = count(r->(r != 0), A[x,:])	# Degree helper function
 		n_nodes = size(F₀, 1)					# Number of nodes	
 		W	    = zeros(n_nodes, n_nodes)		# Transfer matrix
