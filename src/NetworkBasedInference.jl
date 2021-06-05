@@ -9,7 +9,7 @@ module NetworkBasedInference
 	"""
 	
 	"""
-	function NBI(F₀::Matrix)::Matrix
+	function NBI(F₀::AbstractMatrix)
 		M,N = size(F₀)
 		R = diagm([ sum(F₀[i,:]) for i in 1:M ])
 		H = diagm([ sum(F₀[:,j]) for j in 1:N ])
