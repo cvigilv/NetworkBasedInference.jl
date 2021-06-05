@@ -7,7 +7,7 @@ export NBI,
 """
 
 """
-function NBI(F₀::Matrix)::Matrix
+function NBI(F₀::AbstractMatrix)
 	M,N = size(F₀)
 	R = diagm([ sum(F₀[i,:]) for i in 1:M ])
 	H = diagm([ sum(F₀[:,j]) for j in 1:N ])
@@ -16,13 +16,13 @@ function NBI(F₀::Matrix)::Matrix
 	return W
 end
 
-NBI(SymF₀::Symmetric, Nd::Int)::Matrix = NBI(SymF₀[1:Nd, Nd+1:end])
+NBI(SymF₀::Symmetric, Nd::Int) = NBI(SymF₀[1:Nd, Nd+1:end])
 
 
 """
 
 """
-function NWNBI(F₀::Matrix, β::AbstractFloat)::Matrix
+function NWNBI(F₀::AbstractMatrix, β::AbstractFloat)
 	M,N = size(F₀)
 	R  = diagm([ sum(F₀[i,:])   for i in 1:M ])
 	H  = diagm([ sum(F₀[:,j])   for j in 1:N ])
@@ -37,7 +37,7 @@ NWNBI(SymF₀::Symmetric, Nd::Int, β::AbstractFloat) = NWNBI(SymF₀[1:Nd, Nd+1
 """
 
 """
-function SDTNBI(F₀::AbstractMatrix)::Matrix
+function SDTNBI(F₀::AbstractMatrix)
 	k(A, x) = count(r->(r != 0), A[x,:])	# Degree helper function
 	n_nodes = size(F₀, 1)					# Number of nodes	
 	W	    = zeros(n_nodes, n_nodes)		# Transfer matrix
