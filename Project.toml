@@ -1,0 +1,13 @@
+name = "NetworkBasedInference"
+uuid = "6e5ad42f-7bb2-4a07-891e-b648d52ff2e1"
+authors = ["Carlos Vigil Vásquez <cvigil2@uc.cl> and contributors"]
+version = "0.1.0"
+
+[compat]
+julia = "1.7"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
