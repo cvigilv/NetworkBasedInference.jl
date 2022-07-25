@@ -6,8 +6,8 @@ using NamedArrays
 export NBI,
     NWNBI,
     EWNBI,
-    denovoNBI,
-    simmat
+    denovoNBI
+
 """
     NBI(F₀::AbstractMatrix{Float64})
 
