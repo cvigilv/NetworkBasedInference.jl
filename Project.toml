@@ -3,6 +3,10 @@ uuid = "6e5ad42f-7bb2-4a07-891e-b648d52ff2e1"
 authors = ["Carlos Vigil Vásquez <cvigil2@uc.cl> and contributors"]
 version = "0.1.0"
 
+[deps]
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+NamedArrays = "86f7a689-2022-50b4-a561-43c23ac3c673"
+
 [compat]
 julia = "1.7"
 
