@@ -83,6 +83,9 @@ function NWNBI(F₀::AbstractMatrix{T}, β::T) where {T<:Float64}
 
     return W
 end
+
+NWNBI(F₀::AbstractMatrix{Bool}, β::Float64) = NWNBI(AbstractMatrix{Float64}(F₀), β)
+
 """
     EWNBI(F₀::AbstractMatrix{T}, λ::T) where T<:Float64
 
