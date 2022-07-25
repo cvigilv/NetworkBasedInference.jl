@@ -14,6 +14,31 @@ export NBI,
 Calculate the weighted preyaction for the row nodes of a rectangular adyacency matrix using
 a resource-spreading algorithm.
 
+# Example
+```jldoctest
+julia> A = rand(3,7) .> 0.5
+3×7 BitMatrix:
+ 0  1  0  1  1  1  0
+ 0  1  1  0  0  0  0
+ 1  1  0  1  0  1  1
+
+julia> round.(NBI(A); digits = 2)
+7×7 Matrix{Float64}:
+ 0.2   0.2   0.0   0.2   0.0   0.2   0.2
+ 0.07  0.32  0.17  0.15  0.08  0.15  0.07
+ 0.0   0.5   0.5   0.0   0.0   0.0   0.0
+ 0.1   0.22  0.0   0.22  0.12  0.22  0.1
+ 0.0   0.25  0.0   0.25  0.25  0.25  0.0
+ 0.1   0.22  0.0   0.22  0.12  0.22  0.1
+ 0.2   0.2   0.0   0.2   0.0   0.2   0.2
+
+julia> round.(A * NBI(A); digits = 2) # Link prediction
+3×7 Matrix{Float64}:
+ 0.27  1.02  0.17  0.85  0.58  0.85  0.27
+ 0.07  0.82  0.67  0.15  0.08  0.15  0.07
+ 0.67  1.17  0.17  1.0   0.33  1.0   0.67
+```
+
 # Arguments
 - `F₀::AbstractMatrix{Float64}`: Rectangular adjacency matrix
 
@@ -51,6 +76,44 @@ NBI(F₀::AbstractMatrix{Bool}) = NBI(AbstractMatrix{Float64}(F₀))
 Calculate NBI proyection taking into consideration that hub node with more resources are
 more difficult to be influenced.
 
+# Example
+```jldoctest
+julia> A = rand(3,7) .> 0.5
+3×7 BitMatrix:
+ 0  1  0  1  1  1  0
+ 0  1  1  0  0  0  0
+ 1  1  0  1  0  1  1
+
+julia> round.(NWNBI(A, 1.0); digits = 2) # Stronger hub nodes
+7×7 Matrix{Float64}:
+ 0.2   0.07  0.0   0.1   0.0   0.1   0.2
+ 0.07  0.11  0.17  0.08  0.08  0.08  0.07
+ 0.0   0.17  0.5   0.0   0.0   0.0   0.0
+ 0.1   0.08  0.0   0.11  0.12  0.11  0.1
+ 0.0   0.08  0.0   0.12  0.25  0.12  0.0
+ 0.1   0.08  0.0   0.11  0.12  0.11  0.1
+ 0.2   0.07  0.0   0.1   0.0   0.1   0.2
+
+julia> round.(NWNBI(A, 0.0); digits = 2) # Uniform case, equivalent to NBI
+7×7 Matrix{Float64}:
+ 0.2   0.2   0.0   0.2   0.0   0.2   0.2
+ 0.07  0.32  0.17  0.15  0.08  0.15  0.07
+ 0.0   0.5   0.5   0.0   0.0   0.0   0.0
+ 0.1   0.22  0.0   0.22  0.12  0.22  0.1
+ 0.0   0.25  0.0   0.25  0.25  0.25  0.0
+ 0.1   0.22  0.0   0.22  0.12  0.22  0.1
+ 0.2   0.2   0.0   0.2   0.0   0.2   0.2
+
+julia> round.(NWNBI(A, -1.0); digits = 2) # Weaker hub nodes
+7×7 Matrix{Float64}:
+ 0.2   0.6   0.0   0.4   0.0   0.4   0.2
+ 0.07  0.95  0.17  0.3   0.08  0.3   0.07
+ 0.0   1.5   0.5   0.0   0.0   0.0   0.0
+ 0.1   0.68  0.0   0.45  0.12  0.45  0.1
+ 0.0   0.75  0.0   0.5   0.25  0.5   0.0
+ 0.1   0.68  0.0   0.45  0.12  0.45  0.1
+ 0.2   0.6   0.0   0.4   0.0   0.4   0.2
+```
 
 # Arguments
 - `F₀::AbstractMatrix{Float64}`: Rectangular adjacency matrix
@@ -92,6 +155,54 @@ NWNBI(F₀::AbstractMatrix{Bool}, β::Float64) = NWNBI(AbstractMatrix{Float64}(F
 Calculate NBI proyection taking into consideration that edge weights correlate with the
 importance of an edge.
 
+# Example
+```jldoctest
+julia> A = cutoff.(rand(3,7), 0.5)
+3×7 Matrix{Float64}:
+ 0.0       0.0       0.0       0.723091  0.667418  0.500017  0.830616
+ 0.771808  0.857922  0.578597  0.862383  0.0       0.0       0.0
+ 0.0       0.545525  0.516228  0.0       0.555673  0.545182  0.939333
+
+julia> round.(EWNBI(A, 1.0); digits = 2)
+7×7 Matrix{Float64}:
+ 0.25  0.28  0.19  0.28  0.0   0.0   0.0
+ 0.15  0.24  0.18  0.17  0.07  0.07  0.12
+ 0.13  0.23  0.18  0.15  0.08  0.08  0.14
+ 0.14  0.15  0.1   0.27  0.11  0.08  0.14
+ 0.0   0.08  0.08  0.15  0.22  0.18  0.3
+ 0.0   0.09  0.09  0.13  0.21  0.18  0.3
+ 0.0   0.09  0.09  0.12  0.21  0.18  0.3
+
+julia> round.(EWNBI(A, 0.5); digits = 2)
+7×7 Matrix{Float64}:
+ 0.25  0.27  0.22  0.27  0.0   0.0   0.0
+ 0.14  0.23  0.2   0.15  0.08  0.08  0.11
+ 0.13  0.23  0.2   0.14  0.09  0.09  0.12
+ 0.13  0.14  0.11  0.26  0.12  0.1   0.13
+ 0.0   0.09  0.09  0.14  0.22  0.2   0.26
+ 0.0   0.1   0.09  0.13  0.22  0.2   0.26
+ 0.0   0.1   0.09  0.13  0.22  0.2   0.26
+
+julia> round.(EWNBI(A, 0.0); digits = 2)
+7×7 Matrix{Float64}:
+ 0.25  0.25  0.25  0.25  0.0   0.0   0.0
+ 0.12  0.22  0.22  0.12  0.1   0.1   0.1
+ 0.12  0.22  0.22  0.12  0.1   0.1   0.1
+ 0.12  0.12  0.12  0.25  0.12  0.12  0.12
+ 0.0   0.1   0.1   0.12  0.22  0.22  0.22
+ 0.0   0.1   0.1   0.12  0.22  0.22  0.22
+ 0.0   0.1   0.1   0.12  0.22  0.22  0.22
+
+julia> round.(EWNBI(A, -1.0); digits = 2)
+7×7 Matrix{Float64}:
+ 0.24  0.22  0.32  0.22  0.0   0.0   0.0
+ 0.09  0.22  0.27  0.08  0.13  0.13  0.08
+ 0.11  0.22  0.27  0.1   0.11  0.11  0.07
+ 0.11  0.1   0.15  0.22  0.13  0.18  0.11
+ 0.0   0.12  0.12  0.1   0.23  0.27  0.16
+ 0.0   0.1   0.11  0.12  0.23  0.28  0.16
+ 0.0   0.1   0.11  0.12  0.23  0.28  0.16
+```
 
 # Arguments
 - `F₀::AbstractMatrix{Float64}`: Rectangular adjacency matrix
