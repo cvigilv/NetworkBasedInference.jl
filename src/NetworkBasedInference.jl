@@ -240,6 +240,18 @@ function EWNBI(F₀::AbstractMatrix{T}, λ::T) where {T<:Float64}
     return W
 end
 
+
+"""
+    HeatS(M::AbstractMatrix{Float64})
+
+TODO: Add short description to `HeatS`
+
+# Arguments
+- `M::AbstractMatrix{Float64}` : 
+"""
+function HeatS(M::AbstractMatrix{Float64})
+    # implemento HeatS
+end
 """
     denovoNBI(F₀::AbstractMatrix{Float64})
 
