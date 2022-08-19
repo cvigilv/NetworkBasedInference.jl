@@ -21,8 +21,8 @@ a resource-spreading algorithm.
 
 # Example
 ```jldoctest
-julia> A = rand(3,7) .> 0.5
-3×7 BitMatrix:
+julia> A = Matrix{Bool}([0 1 0 1 1 1 0; 0 1 1 0 0 0 0; 1 1 0 1 0 1 1])
+3×7 Matrix{Bool}:
  0  1  0  1  1  1  0
  0  1  1  0  0  0  0
  1  1  0  1  0  1  1
@@ -83,8 +83,8 @@ more difficult to be influenced.
 
 # Example
 ```jldoctest
-julia> A = rand(3,7) .> 0.5
-3×7 BitMatrix:
+julia> A = Matrix{Bool}([0 1 0 1 1 1 0; 0 1 1 0 0 0 0; 1 1 0 1 0 1 1])
+3×7 Matrix{Bool}:
  0  1  0  1  1  1  0
  0  1  1  0  0  0  0
  1  1  0  1  0  1  1
@@ -162,7 +162,7 @@ importance of an edge.
 
 # Example
 ```jldoctest
-julia> A = cutoff.(rand(3,7), 0.5)
+julia> A = [0.0 0.0 0.0 0.723091 0.667418 0.500017 0.830616; 0.771808 0.857922 0.578597 0.862383 0.0 0.0 0.0; 0.0 0.545525 0.516228 0.0 0.555673 0.545182 0.939333]
 3×7 Matrix{Float64}:
  0.0       0.0       0.0       0.723091  0.667418  0.500017  0.830616
  0.771808  0.857922  0.578597  0.862383  0.0       0.0       0.0
@@ -265,6 +265,7 @@ function denovoNBI(F₀::AbstractMatrix{Float64})
 end
 
 denovoNBI(F₀::AbstractMatrix{Bool}) = denovoNBI(AbstractMatrix{Float64}(F₀))
+
 function denovoNBI(namedF₀::NamedMatrix)
     namedW = copy(namedF₀)
     namedW.array = denovoNBI(Matrix{Float64}(namedF₀.array))
