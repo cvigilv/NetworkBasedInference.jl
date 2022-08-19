@@ -1,3 +1,17 @@
+name = "NetworkBasedInference"
+uuid = "6e5ad42f-7bb2-4a07-891e-b648d52ff2e1"
+authors = ["Carlos Vigil Vásquez <cvigil2@uc.cl> and contributors"]
+version = "0.0.0"
+
 [deps]
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 NamedArrays = "86f7a689-2022-50b4-a561-43c23ac3c673"
+
+[compat]
+julia = "1.7"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
